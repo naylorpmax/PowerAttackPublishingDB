@@ -1,4 +1,4 @@
-# homebrew-db
+# dnd-homebrew-db
 
 ## Setup:
 
