@@ -27,29 +27,63 @@ class Spell:
 		self.components = components
 		self.duration = duration
 		self.classes = classes
-		self.description = description
 		self.source = source
+		self.description = description
 
 	@classmethod
 	def from_str(cls, s: str, source: str):
 		lines = s.split("\n")
-		name = lines[0].split(" (")[0].replace("* ", "").replace("   oo    ", "").strip()
 
 		try:
+			name = clean_str(lines[0].split(" (")[0])
+		except Exception as err:
+			print(f"parsing error: spell: {lines[0]}")
+			raise err
+
+		try:
+			# parse level
 			level = lines[0].split("(")[1][0]
 			if level == "C" or level == "c":
-				level = 0
-			school = lines[0].split(", ")[1].split(")")[0].strip()
-			casting_time = lines[1].split("Casting Time: ")[1].strip()
-			spell_range = lines[2].split("Range: ")[1].strip()
-			components = lines[3].split("Components: ")[1].strip()
-			duration = lines[4].split("Duration: ")[1].strip()
-			classes = lines[5].split("Classes: ")[1].strip()
+				level = "0"
 
-			if "* " in lines[6]:
-				description = "; ".join(lines[6:]).split("* ")[1].strip()
+			# parse school
+			if "evel" in lines[0]:
+				school = clean_str(lines[0].split("evel, ")[1].split(")")[0])
 			else:
-				description = "; ".join(lines[6:]).replace(" oo ", "").replace("   ", "").strip()
+				school = clean_str(lines[0].split("antrip, ")[1].split(")")[0])
+
+			# parse casting time
+			casting_time = clean_str(lines[1].split("Casting Time: ")[1]) \
+				.replace("Bonus", "bonus") \
+				.replace("Action", "action") \
+				.replace("Reaction", "reaction") \
+				.replace("Hour", "hr") \
+				.replace("Minute", "min") \
+				.replace("hour", "hr") \
+				.replace("minute", "min") \
+				.replace("Ritual", "ritual")
+
+			# parse spell range
+			spell_range = clean_str(lines[2].split("Range: ")[1]) \
+				.replace("feet", "ft") \
+				.replace("ft.", "ft")
+
+			# parse components
+			components = clean_str(lines[3].split("Components: ")[1])
+
+			# parse duration
+			duration = clean_str(lines[4].split("Duration: ")[1])
+
+			# parse classes
+			classes = clean_str(lines[5].split("Classes: ")[1])
+
+			# parse description
+			if "* " in lines[6]:
+				description = "\n ".join([clean_str(line) for line in lines[6:]])
+			else:
+				description = "\n ".join([clean_str(line) for line in lines[6:]])
+
+			# parse source
 			source = source.replace(".txt", "")
 			if ". " in source:
 				source = source.split(". ")[1]
@@ -58,6 +92,10 @@ class Spell:
 		except IndexError as err:
 			print(f"parsing error: spell: {name}")
 			raise err
+
+
+def clean_str(s: str) -> str:
+	return s.replace("* ", "").replace(" oo ", " ").replace("  ", " ").strip()
 
 
 def from_file(file_path: str):
@@ -75,6 +113,7 @@ def from_file(file_path: str):
 		spells.append(Spell.from_str(spell_str, file_path.name))
 
 	return spells
+
 
 def to_dataframe(spells: List[Spell]) -> pd.DataFrame:
 	as_map = defaultdict(list)
