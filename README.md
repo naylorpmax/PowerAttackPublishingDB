@@ -1,4 +1,4 @@
-# dnd-homebrew-db
+# PowerAttackPublishingDB
 
 ## Setup:
 
@@ -60,6 +60,6 @@ SELECT
 FROM
 	spells
 WHERE
-	classes ~ 'Cleric' 
+	classes ~ 'Cleric'
 	AND range = 'Touch';
 ```
