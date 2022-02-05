@@ -12,14 +12,19 @@ db:	## create database
 
 .PHONY: db-init
 db-init: db
-	sleep 5 && docker exec -it homebrew-db psql "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}" -f sql/db-init.sql
+	sleep 5 && docker exec -it \
+		homebrew-db \
+		psql "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}" \
+		-f sql/db-init.sql
 
 .PHONY: db-conn
 db-conn: ## connect to database
-	docker exec -it homebrew-db psql "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}"
+	docker exec -it \
+		homebrew-db \
+		psql "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}"
 
 .PHONY: db-write
-db-write:
+db-write: ## write data to database
 	docker-compose run \
 		-e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \
 		-e DATA_PATH="${DATA_PATH}" \
@@ -27,5 +32,15 @@ db-write:
 		homebrew-write
 
 .PHONY: spells
-spells:	## put spells in database
-	docker-compose run -e SPELLS_DIR="${SPELLS_DIR}" -e SPELLS_DATA_PATH=${SPELLS_DATA_PATH} spells
+spells:	## parse spell files
+	docker-compose run \
+		-e SPELLS_DIR="${SPELLS_DIR}" \
+		-e SPELLS_DATA_PATH=${SPELLS_DATA_PATH} \
+		scripts/spells
+
+.PHONY: monsters
+monsters:	## parse monster files
+	docker-compose run \
+		-e MONSTERS_DIR="${MONSTERS_DIR}" \
+		-e MONSTERS_DATA_PATH=${MONSTERS_DATA_PATH} \
+		scripts/monsters

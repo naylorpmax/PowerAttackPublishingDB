@@ -27,11 +27,23 @@ services:
     working_dir: /app
 
   spells:
+    container_name: homebrew-spells
     image: homebrew-py:0.0.1
     command: "python -u spells.py"
     environment:
       SPELLS_DIR: $SPELLS_DIR
       SPELLS_DATA_PATH: $SPELLS_DATA_PATH
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  monsters:
+    container_name: homebrew-monsters
+    image: homebrew-py:0.0.1
+    command: "python -u monsters.py"
+    environment:
+      MONSTERS_DIR: $MONSTERS_DIR
+      MONSTERS_DATA_PATH: $MONSTERS_DATA_PATH
     volumes:
       - .:/app
     working_dir: /app

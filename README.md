@@ -11,9 +11,16 @@
 **Parse Data**
 
 ```bash
-SPELLS_DIR=data/spells/ SPELLS_DATA_PATH=data/spells.csv make spells
+export SPELLS_DIR=data/spells/
+export SPELLS_DATA_PATH=data/spells.csv
+make spells
 ```
 
+```bash
+export MONSTERS_DIR=data/monsters/
+export MONSTERS_DATA_PATH=data/monsters.csv
+make monsters
+```
 **Load Data**
 
 ```bash
@@ -32,8 +39,27 @@ make db-conn
 
 **Query Data**
 
-```sql
-SELECT name, school, components FROM spells WHERE level='3';
+Sample queries:
 
-SELECT name, school, level, classes FROM spells WHERE classes ~ 'Cleric' AND range = 'Touch';
+```sql
+SELECT
+	name
+	,school
+	,components
+FROM
+	spells
+WHERE level='3';
+
+-- or
+
+SELECT
+	name
+	,school
+	,level
+	,classes
+FROM
+	spells
+WHERE
+	classes ~ 'Cleric' 
+	AND range = 'Touch';
 ```
