@@ -36,11 +36,11 @@ spells:	## parse spell files
 	docker-compose run \
 		-e SPELLS_DIR="${SPELLS_DIR}" \
 		-e SPELLS_DATA_PATH=${SPELLS_DATA_PATH} \
-		scripts/spells
+		spells
 
 .PHONY: monsters
 monsters:	## parse monster files
 	docker-compose run \
 		-e MONSTERS_DIR="${MONSTERS_DIR}" \
 		-e MONSTERS_DATA_PATH=${MONSTERS_DATA_PATH} \
-		scripts/monsters
+		monsters

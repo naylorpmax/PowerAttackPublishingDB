@@ -34,6 +34,10 @@ export DATA_PATH=data/spells.csv
 export TABLE_NAME=spells
 make db-write
 
+export DATA_PATH=data/monsters.csv
+export TABLE_NAME=monsters
+make db-write
+
 make db-conn
 ```
 

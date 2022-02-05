@@ -13,7 +13,7 @@ services:
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_HOST: $POSTGRES_HOST
     volumes:
-      - /home/maxabillion/Documents/projects/homebrew-db/sql:/sql
+      - /home/maxabillion/Documents/projects/PowerAttackPublishingDB/sql:/sql
 
   homebrew-write:
     container_name: homebrew-write
@@ -29,7 +29,7 @@ services:
   spells:
     container_name: homebrew-spells
     image: homebrew-py:0.0.1
-    command: "python -u spells.py"
+    command: "python -u scripts/spells.py"
     environment:
       SPELLS_DIR: $SPELLS_DIR
       SPELLS_DATA_PATH: $SPELLS_DATA_PATH
@@ -40,7 +40,7 @@ services:
   monsters:
     container_name: homebrew-monsters
     image: homebrew-py:0.0.1
-    command: "python -u monsters.py"
+    command: "python -u scripts/monsters.py"
     environment:
       MONSTERS_DIR: $MONSTERS_DIR
       MONSTERS_DATA_PATH: $MONSTERS_DATA_PATH
