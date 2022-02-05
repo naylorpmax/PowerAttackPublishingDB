@@ -1,4 +1,4 @@
-# dnd-homebrew-db
+# PowerAttackPublishingDB
 
 ## Setup:
 
